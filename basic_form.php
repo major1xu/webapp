@@ -12,11 +12,14 @@ include_once('simple_html_dom.php');
 <html>
 <body>
 <!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
-<div id="dom-target" >
+
 Welcome to
 <?php
 echo $_GET["websiteurl"];
+?>
 
+<div id="dom-target" >
+<?php
 // need to check if the url is reachable, throw 404 if we can not find it
 // also needed: define a page size limit, if too big, it could crash the server or take too long, so throw an error message
 // nice to have: add a progressive bar
@@ -31,12 +34,14 @@ else {
     echo $html;
     echo "</textarea>";
 }
-
-echo "<br>";
-echo "html doc summary:";
-
 ?>
 </div>
+
+<?php
+echo "<br>";
+echo "html doc summary:";
+?>
+
 <script type="text/javascript">
     var div = document.getElementById("dom-target");
     var myData = div.textContent;
