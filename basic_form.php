@@ -11,7 +11,8 @@ include_once('simple_html_dom.php');
 
 <html>
 <body>
-
+<!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
+<div id="dom-target" >
 Welcome to
 <?php
 echo $_GET["websiteurl"];
@@ -34,29 +35,12 @@ else {
 echo "<br>";
 echo "html doc summary:";
 
-$content = "";
-$items = $html->getElementsByTagName('p');
-$countOfItems = count($items);
-
-if( $countOfItems > 0 )
-{
-    $count=0;
-    while (list(, $item) = each($items)) {
-//        $count++;
-//        echo "count=";
-//        echo $count;
-//        echo $item;
-//        echo "<br";
-        $content = $item->nodeValue;
-    }
-}
-//else 
-//{ 
-//    $content = $html->saveHTML();
-//}
-echo $content;
-
 ?>
-
+</div>
+<script type="text/javascript">
+    var div = document.getElementById("dom-target");
+    var myData = div.textContent;
+    alert(myData);
+</script>
 </body>
 </html>
