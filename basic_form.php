@@ -37,20 +37,24 @@ echo "html doc summary:";
 $content = "";
 $items = $html->getElementsByTagName('p');
 $countOfItems = count($items);
-echo $countOfItems;
+
 if( $countOfItems > 0 )
 {
+    $count=0;
     while (list(, $item) = each($items)) {
-        echo $item;
-        echo "<br";
+//        $count++;
+//        echo "count=";
+//        echo $count;
+//        echo $item;
+//        echo "<br";
+        $content = $item->nodeValue;
     }
 }
-
 //else 
 //{ 
 //    $content = $html->saveHTML();
 //}
-//echo $content;
+echo $content;
 
 ?>
 
