@@ -10,6 +10,25 @@ include_once('simple_html_dom.php');
 ?>
 
 <html>
+<head>
+    <title>html source code and summary</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("h1").click(function(){
+                var div = document.getElementById("dom-target");
+                var myData = div.textContent;
+                alert(myData);
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        .blue { color: blue; }
+    </style>
+</head>
 <body>
 <!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
 
@@ -39,13 +58,8 @@ else {
 
 <?php
 echo "<br>";
-echo "html doc summary:";
 ?>
+<h1>Click here to show summary.</h1>
 
-<script type="text/javascript">
-    var div = document.getElementById("dom-target");
-    var myData = div.textContent;
-    alert(myData);
-</script>
 </body>
 </html>
