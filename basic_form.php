@@ -7,14 +7,12 @@
  */
 error_reporting(E_ERROR);
 include_once('simple_html_dom.php');
-
 ?>
 
 <html>
 <body>
 
 Welcome to
-
 <?php
 echo $_GET["websiteurl"];
 
@@ -23,13 +21,38 @@ echo $_GET["websiteurl"];
 // nice to have: add a progressive bar
 $html = file_get_html($_GET["websiteurl"]);
 
-if($html == false)
+if($html == false) {
     echo "<br>Failed to get the url: ";
-else
+}
+else {
+    echo "<br>";
+    echo "<textarea id=\"Desc\" cols=\"45\" rows=\"30\" wrap=\"soft\" name=\"Desc\">";
     echo $html;
-?><br>
+    echo "</textarea>";
+}
 
-Your last name is: <?php echo $_GET["lastname"]; ?>
+echo "<br>";
+echo "html doc summary:";
+
+$content = "";
+$items = $html->getElementsByTagName('p');
+$countOfItems = count($items);
+echo $countOfItems;
+if( $countOfItems > 0 )
+{
+    while (list(, $item) = each($items)) {
+        echo $item;
+        echo "<br";
+    }
+}
+
+//else 
+//{ 
+//    $content = $html->saveHTML();
+//}
+//echo $content;
+
+?>
 
 </body>
 </html>

@@ -5,7 +5,6 @@ include_once('../simple_html_dom.php');
 $html = file_get_html('google.htm');
 //$html = file_get_html('youtube.htm');
 //$html = file_get_html('Product.ibatis.xml');
-echo $html;
 
 $lang = '';
 $l=$html->find('html', 0);
@@ -45,7 +44,7 @@ function stat_dom($dom) {
     
     echo 'Total: '. count($dom->nodes).
         ', Text: '.$count_text.
-        ', Commnet: '.$count_comm.
+        ', Comment: '.$count_comm.
         ', Tag: '.$count_elem.
         ', End Tag: '.$count_tag_end.
         ', Unknown: '.$count_unknown;
