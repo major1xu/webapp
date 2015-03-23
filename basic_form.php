@@ -15,7 +15,7 @@ $html = file_get_html($_GET["websiteurl"]);
 
 if($html == false) {
     echo '<script language="javascript">';
-    echo 'alert("Failed to get the url:")';
+    echo 'alert("Failed to get the url:" )';
     echo '</script>';
 }
 
@@ -32,9 +32,31 @@ if($html == false) {
             $("h3").click(function(){
                 var source_div = document.getElementById("dom-target");
                 var myData = source_div.textContent;
-                //alert(myData);
                 var destination_div = document.getElementById("dom-summary");
+
+                // here we do the summary stuff, also need to bind the click of tags with the dom-target (the source code)
                 destination_div.textContent = myData;
+                parser = new DOMParser();
+                doc = parser.parseFromString(myData, "text/xml");
+                // a rough idea: traverse the html document, for each tag, put it in a hash map, also create a count for
+                // each tag. At the end, show the tag/count pairs.
+                var count = 0;
+                function walkDOM(main) {
+                    var arr = [];
+                    var loop = function(main) {
+                        count++;
+                        do {
+                            arr.push(main);
+                            if(main.hasChildNodes())
+                                loop(main.firstChild);
+                        }
+                        while (main = main.nextSibling);
+                    }
+                    loop(main);
+                    alert(count);
+                    return arr;
+                }
+                walkDOM(doc.body);
             });
         });
     </script>
@@ -69,7 +91,6 @@ else {
                 echo "</textarea>";
             ?>
             </div>
-
         </td>
         <td><h3>Click to show summary.</h3></td>
         <td>
