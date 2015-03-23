@@ -7,6 +7,18 @@
  */
 error_reporting(E_ERROR);
 include_once('simple_html_dom.php');
+
+// need to check if the url is reachable, throw 404 if we can not find it
+// also needed: define a page size limit, if too big, it could crash the server or take too long, so throw an error message
+// nice to have: add a progressive bar
+$html = file_get_html($_GET["websiteurl"]);
+
+if($html == false) {
+    echo '<script language="javascript">';
+    echo 'alert("Failed to get the url:")';
+    echo '</script>';
+}
+
 ?>
 
 <html>
@@ -29,34 +41,32 @@ include_once('simple_html_dom.php');
 
     <style type="text/css">
         .blue { color: blue; }
+        .noShow {display: none;}
     </style>
 </head>
 <body>
 <!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
 
-Welcome to
+
 <?php
-echo $_GET["websiteurl"];
+if ($html == false) {
+    echo "<a href=\"javascript:history.go(-1)\">Go Back</a>";
+}
+else {
+    echo "Welcome to ";
+    echo $_GET["websiteurl"];
+}
 ?>
+
 <table>
     <tr>
         <td>
             <div id="dom-target" >
             <?php
-            // need to check if the url is reachable, throw 404 if we can not find it
-            // also needed: define a page size limit, if too big, it could crash the server or take too long, so throw an error message
-            // nice to have: add a progressive bar
-            $html = file_get_html($_GET["websiteurl"]);
-
-            if($html == false) {
-                echo "<br>Failed to get the url: ";
-            }
-            else {
                 echo "<br>";
                 echo "<textarea id=\"Desc\" cols=\"45\" rows=\"30\" wrap=\"soft\" name=\"Desc\">";
                 echo $html;
                 echo "</textarea>";
-            }
             ?>
             </div>
 
@@ -70,9 +80,6 @@ echo $_GET["websiteurl"];
         </td>
     </tr>
 </table>
-<?php
-echo "<br>";
-?>
 
 </body>
 </html>
