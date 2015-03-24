@@ -31,34 +31,45 @@ if($html == false) {
         $(document).ready(function(){
             $("h3").click(function(){
                 var source_div = document.getElementById("dom-target");
+                //var html_string = source_div.getElementById("Desc")
+                var html_textarea = GetElementInsideContainer("dom-target", "Desc");
+                alert(html_textarea.textContent);
                 var myData = source_div.textContent;
                 var destination_div = document.getElementById("dom-summary");
 
                 // here we do the summary stuff, also need to bind the click of tags with the dom-target (the source code)
-                destination_div.textContent = myData;
+                destination_div.textContent = html_textarea.textContent;
                 parser = new DOMParser();
-                doc = parser.parseFromString(myData, "text/xml");
+                doc = parser.parseFromString(html_textarea.textContent, "text/xml");
                 // a rough idea: traverse the html document, for each tag, put it in a hash map, also create a count for
                 // each tag. At the end, show the tag/count pairs.
-                var count = 0;
-                function walkDOM(main) {
-                    var arr = [];
-                    var loop = function(main) {
-                        count++;
-                        do {
-                            arr.push(main);
-                            if(main.hasChildNodes())
-                                loop(main.firstChild);
-                        }
-                        while (main = main.nextSibling);
-                    }
-                    loop(main);
-                    alert(count);
-                    return arr;
-                }
-                walkDOM(doc.body);
+
+                walkDOM(doc);
             });
         });
+
+        function walkDOM(main) {
+            var arr = [];
+            var loop = function(main) {
+                do {
+
+                    if(main.nodeType == 1)
+                        arr.push(main);
+                    if(main.hasChildNodes())
+                        loop(main.firstChild);
+                }
+                while (main = main.nextSibling);
+            }
+            loop(main);
+            alert(arr.toString());
+            return arr;
+        }
+
+        function GetElementInsideContainer(containerID, childID) {
+            var elm = document.getElementById(childID);
+            var parent = elm ? elm.parentNode : {};
+            return (parent.id && parent.id === containerID) ? elm : {};
+        }
     </script>
 
     <style type="text/css">
