@@ -26,7 +26,7 @@ if($html == false) {
     <title>html source code and summary</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="js/jquery-1.4.2.js"></script>
-
+    <!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
     <script type="text/javascript">
         $(document).ready(function(){
             $("h3").click(function(){
@@ -58,7 +58,6 @@ if($html == false) {
 
         // http://stackoverflow.com/questions/8747086/most-efficient-way-to-iterate-over-all-dom-elements
         function walkDOM(main) {
-            var arr = [];
             var map = new Object();
             // http://stackoverflow.com/questions/4246980/how-to-create-a-simple-map-using-javascript-jquery
             function get(k) {
@@ -71,7 +70,6 @@ if($html == false) {
                             map[main.tagName] = 1;
                         else  // existing element, increase count by 1, and put it back to map
                             map[main.tagName] = get(main.tagName) + 1;
-                        arr.push(main);
                     }
                     if(main.hasChildNodes())
                         loop(main.firstChild);
@@ -96,8 +94,6 @@ if($html == false) {
     </style>
 </head>
 <body>
-<!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
-
 
 <?php
 if ($html == false) {
