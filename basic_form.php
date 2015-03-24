@@ -31,16 +31,13 @@ if($html == false) {
         $(document).ready(function(){
             $("h3").click(function(){
                 var source_div = document.getElementById("dom-target");
-                //var html_string = source_div.getElementById("Desc")
                 var html_textarea = GetElementInsideContainer("dom-target", "Desc");
-                alert(html_textarea.textContent);
-                var myData = source_div.textContent;
                 var destination_div = document.getElementById("dom-summary");
 
-                // here we do the summary stuff, also need to bind the click of tags with the dom-target (the source code)
                 destination_div.textContent = html_textarea.textContent;
                 parser = new DOMParser();
                 doc = parser.parseFromString(html_textarea.textContent, "text/xml");
+                // here we do the summary stuff, also need to bind the click of tags with the dom-target (the source code)
                 // a rough idea: traverse the html document, for each tag, put it in a hash map, also create a count for
                 // each tag. At the end, show the tag/count pairs.
 
@@ -48,11 +45,11 @@ if($html == false) {
             });
         });
 
+        // http://stackoverflow.com/questions/8747086/most-efficient-way-to-iterate-over-all-dom-elements
         function walkDOM(main) {
             var arr = [];
             var loop = function(main) {
                 do {
-
                     if(main.nodeType == 1)
                         arr.push(main);
                     if(main.hasChildNodes())
@@ -65,6 +62,7 @@ if($html == false) {
             return arr;
         }
 
+        // http://stackoverflow.com/questions/7171483/simple-way-to-get-element-by-id-within-a-div-tag
         function GetElementInsideContainer(containerID, childID) {
             var elm = document.getElementById(childID);
             var parent = elm ? elm.parentNode : {};
