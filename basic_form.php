@@ -32,8 +32,11 @@ if($html == false) {
             $("h3").click(function(){
                 var source_div = document.getElementById("dom-target");
                 var html_textarea = GetElementInsideContainer("dom-target", "Desc");
+
+                // ??? how do I tie the hashmap back to source_div ???
                 parser = new DOMParser();
                 doc = parser.parseFromString(html_textarea.textContent, "text/xml");
+
                 // here we do the summary stuff, also need to bind the click of tags with the dom-target (the source code)
                 // a rough idea: traverse the html document, for each tag, put it in a hash map, also create a count for
                 // each tag. At the end, show the tag/count pairs.
@@ -44,6 +47,10 @@ if($html == false) {
                 var string ='';
                 // print out map content
                 // https://sunfishempire.wordpress.com/2014/08/19/5-ways-to-use-a-javascript-hashmap/
+                //
+                // MXU: think add a click function on each tag, upon click, we go to source_div (dom-target), and highlight
+                // the corresponding elements.
+                //
                 for (var x in hashmap)
                 {
                     string = string + x;
@@ -51,6 +58,14 @@ if($html == false) {
                     var value = hashmap[x];
                     string = string + value;
                     string = string + ', ';
+                    
+                    var inputElement = document.createElement('input');
+                    inputElement.type = "button"
+                    inputElement.value = x + ":" + value;
+                    inputElement.addEventListener('click', function(){
+                        alert('I am clicked');
+                    });
+                    document.body.appendChild(inputElement);
                 }
                 destination_div.textContent = string;
             });
@@ -106,8 +121,7 @@ else {
 ?>
 
 <table>
-    <tr>
-        <td>
+        <tr>
             <div id="dom-target" >
             <?php
                 echo "<br>";
@@ -116,15 +130,13 @@ else {
                 echo "</textarea>";
             ?>
             </div>
-        </td>
-        <td><h3>Click to show summary.</h3></td>
-        <td>
+        </tr>
+        <tr><h3>Click to show summary.</h3></tr>
+        <tr>
             <div id="dom-summary">
-                <textarea id="summary" cols="45" rows="30" wrap="soft" name="Summary">
-                </textarea>
+
             </div>
-        </td>
-    </tr>
+        </tr>
 </table>
 
 </body>
