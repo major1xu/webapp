@@ -58,12 +58,15 @@ if($html == false) {
                     string = string + value;
                     string = string + ', ';
 
+                    // http://stackoverflow.com/questions/9643311/pass-string-parameter-in-an-onclick-function
                     var inputElement = document.createElement('input');
                     inputElement.type = "button"
                     inputElement.value = x + ":" + value;
                     inputElement.addEventListener('click', function(){
-                        // parsing the source_div, and highlight the corresponding tag
-                        var myNodeList = document.getElementById("dom-source").getElementsByTagName(x);
+                        // TBD: parsing the source_div, and highlight the corresponding tag
+                        // tried (not working either)
+                        // var myNodeList = document.getElementById("dom-source").getElementsByTagName(x);
+                        var myNodeList = html_textarea.getElementsByTagName(x);
                         alert(myNodeList.length);
                         for (var i = 0; i < myNodeList.length; ++i) {
                             var item = myNodeList[i];  // Calling myNodeList.item(i) isn't necessary in JavaScript
