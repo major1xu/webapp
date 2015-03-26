@@ -42,7 +42,7 @@ if($html == false) {
 
                 var hashmap = walkDOM(doc);
                 var destination_div = document.getElementById("dom-summary");
-                console.log(hashmap);
+
                 var string ='';
                 // print out map content
                 // https://sunfishempire.wordpress.com/2014/08/19/5-ways-to-use-a-javascript-hashmap/
@@ -64,15 +64,19 @@ if($html == false) {
                     inputElement.value = x + ":" + value;
                     inputElement.addEventListener('click', function(){
                         // TBD: parsing the source_div, and highlight the corresponding tag
-                        // tried (not working either)
-                        // var myNodeList = document.getElementById("dom-source").getElementsByTagName(x);
-                        var myNodeList = html_textarea.getElementsByTagName(x);
+                        // tried (not working yet)
+                        // var myNodeList = html_textarea.getElementsByTagName(x);;
+                        // http://stackoverflow.com/questions/12024483/how-to-pass-parameter-to-function-using-in-addeventlistener
+                        alert('inside:' + this.value);
+                        /*
+                        var myNodeList = doc.getElementsByTagName(this.value);
                         alert(myNodeList.length);
                         for (var i = 0; i < myNodeList.length; ++i) {
                             var item = myNodeList[i];  // Calling myNodeList.item(i) isn't necessary in JavaScript
                             item.style.color="red";
                         }
-                    });
+                        */
+                    }, false);
                     document.body.appendChild(inputElement);
                 }
                 destination_div.textContent = string;
