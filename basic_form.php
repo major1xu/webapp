@@ -63,29 +63,25 @@ if($html == false) {
                     inputElement.type = "button"
                     inputElement.value = x + ":" + value;
                     inputElement.addEventListener('click', function(){
-                        // TBD: parsing the source_div, and highlight the corresponding tag
-                        // tried (not working yet)
-                        // var myNodeList = html_textarea.getElementsByTagName(x);;
+
+                        // make sure we get the correct tag
                         // http://stackoverflow.com/questions/12024483/how-to-pass-parameter-to-function-using-in-addeventlistener
-                        alert('inside:' + this.value);
-                        /*
-                        var myNodeList = doc.getElementsByTagName(this.value);
-                        alert(myNodeList.length);
-                        for (var i = 0; i < myNodeList.length; ++i) {
-                            var item = myNodeList[i];  // Calling myNodeList.item(i) isn't necessary in JavaScript
-                            item.style.color="red";
-                        }
-                        */
+                        //alert('inside:' + this.value);
+                        html_textarea.textContent  = '<h4>' + this.value + '</h4>';
+
+
                     }, false);
                     document.body.appendChild(inputElement);
                 }
-                destination_div.textContent = string;
+                //destination_div.textContent = string;
             });
         });
 
+        // Use the function below to walk the DOM
         // http://stackoverflow.com/questions/8747086/most-efficient-way-to-iterate-over-all-dom-elements
         function walkDOM(main) {
             var map = new Object();
+            // A reference to create map in javascript
             // http://stackoverflow.com/questions/4246980/how-to-create-a-simple-map-using-javascript-jquery
             function get(k) {
                 return map[k];
@@ -107,6 +103,7 @@ if($html == false) {
             return map;
         }
 
+        // a convenience method
         // http://stackoverflow.com/questions/7171483/simple-way-to-get-element-by-id-within-a-div-tag
         function GetElementInsideContainer(containerID, childID) {
             var elm = document.getElementById(childID);
@@ -134,7 +131,7 @@ else {
 
 <table>
         <tr>
-            <div id="dom-source" >
+            <div id="dom-source" contenteditable="true">
             <?php
                 echo "<br>";
                 echo "<textarea id=\"Desc\" cols=\"45\" rows=\"30\" wrap=\"soft\" name=\"Desc\">";
