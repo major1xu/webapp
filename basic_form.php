@@ -95,13 +95,23 @@ if($html == false) {
         // http://stackoverflow.com/questions/11563554/how-do-i-detect-xml-parsing-errors-when-using-javascripts-domparser-in-a-cross
         // My function that parses a string into an XML DOM, throwing an Error if XML parsing fails
         function parseXml(xmlString) {
-            var parser = new DOMParser();
-            // attempt to parse the passed-in xml
-            var dom = parser.parseFromString(xmlString, 'text/xml');
-            if(isParseError(dom)) {
+            // http://www.w3schools.com/dom/dom_parser.asp
+            if (window.DOMParser)
+            {
+                parser=new DOMParser();
+                xmlDoc=parser.parseFromString(xmlString,"text/xml");
+            }
+            else // code for IE
+            {
+                xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+                xmlDoc.async=false;
+                xmlDoc.loadXML(xmlString);
+            }
+
+            if(isParseError(xmlDoc)) {
                 throw new Error('Error parsing XML');
             }
-            return dom;
+            return xmlDoc;
         }
 
         function isParseError(parsedDocument) {
