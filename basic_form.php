@@ -31,17 +31,19 @@ if($html == false) {
         $(document).ready(function(){
             $("h3").click(function(){
                 var source_div = document.getElementById("dom-source");
-                var html_textarea = GetElementInsideContainer("dom-source", "Desc");
+                var source_textarea = GetElementInsideContainer("dom-source", "Desc");
 
                 parser = new DOMParser();
-                doc = parser.parseFromString(html_textarea.textContent, "text/xml");
+                //doc = parser.parseFromString(source_textarea.textContent, "text/xml");
+                doc = parseXml(source_textarea.textContent);
 
                 // here we do the summary stuff, also need to bind the click of tags with the dom-source (the source code)
                 // a rough idea: traverse the html document, for each tag, put it in a hash map, also create a count for
                 // each tag. At the end, show the tag/count pairs.
 
                 var hashmap = walkDOM(doc);
-                var destination_div = document.getElementById("dom-summary");
+                var destination_div = document.getElementById("dom-source-parsed");
+                var parsed_textarea =  GetElementInsideContainer("dom-source-parsed", "Parsed");
 
                 var string ='';
                 // print out map content
@@ -67,15 +69,42 @@ if($html == false) {
                         // make sure we get the correct tag
                         // http://stackoverflow.com/questions/12024483/how-to-pass-parameter-to-function-using-in-addeventlistener
                         //alert('inside:' + this.value);
-                        html_textarea.textContent  = '<h4>' + this.value + '</h4>';
+                        parsed_textarea.textContent  = '<h4>' + this.value + '</h4>';
 
 
                     }, false);
                     document.body.appendChild(inputElement);
                 }
-                //destination_div.textContent = string;
+                parsed_textarea.textContent = string;
             });
         });
+
+        // handle the parsing error from initial parseFormString call.
+        // http://stackoverflow.com/questions/11563554/how-do-i-detect-xml-parsing-errors-when-using-javascripts-domparser-in-a-cross
+        // My function that parses a string into an XML DOM, throwing an Error if XML parsing fails
+        function parseXml(xmlString) {
+            var parser = new DOMParser();
+            // attempt to parse the passed-in xml
+            var dom = parser.parseFromString(xmlString, 'text/xml');
+            if(isParseError(dom)) {
+                throw new Error('Error parsing XML');
+            }
+            return dom;
+        }
+
+        function isParseError(parsedDocument) {
+            // parser and parsererrorNS could be cached on startup for efficiency
+            var parser = new DOMParser(),
+                errorneousParse = parser.parseFromString('<', 'text/xml'),
+                parsererrorNS = errorneousParse.getElementsByTagName("parsererror")[0].namespaceURI;
+
+            if (parsererrorNS === 'http://www.w3.org/1999/xhtml') {
+                // In PhantomJS the parseerror element doesn't seem to have a special namespace, so we are just guessing here :(
+                return parsedDocument.getElementsByTagName("parsererror").length > 0;
+            }
+
+            return parsedDocument.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0;
+        };
 
         // Use the function below to walk the DOM
         // http://stackoverflow.com/questions/8747086/most-efficient-way-to-iterate-over-all-dom-elements
@@ -131,14 +160,25 @@ else {
 
 <table>
         <tr>
-            <div id="dom-source" contenteditable="true">
-            <?php
-                echo "<br>";
-                echo "<textarea id=\"Desc\" cols=\"45\" rows=\"30\" wrap=\"soft\" name=\"Desc\">";
-                echo $html;
-                echo "</textarea>";
-            ?>
-            </div>
+            <td>
+                <div id="dom-source" contenteditable="true">
+                    <?php
+                        echo "<br>";
+                        echo "<textarea id=\"Desc\" cols=\"45\" rows=\"30\" wrap=\"soft\" name=\"Desc\">";
+                        echo $html;
+                        echo "</textarea>";
+                    ?>
+                </div>
+            </td>
+            <td>
+                <div id="dom-source-parsed">
+                    <?php
+                    echo "<br>";
+                    echo "<textarea id=\"Parsed\" cols=\"45\" rows=\"30\" wrap=\"soft\" name=\"Parsed\">";
+                    echo "</textarea>";
+                    ?>
+                 </div>
+            </td>
         </tr>
         <tr><h3>Click to show summary.</h3></tr>
         <tr>
