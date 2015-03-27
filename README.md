@@ -9,7 +9,7 @@ jQuery
 
 Demo site:
 
-http://www.stlplace.com/demos/webapp/basic_form.html
+http://www.stlplace.com/demos/webapp/index.html
 
 html source file for testing:
 
