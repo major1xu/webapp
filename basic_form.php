@@ -26,12 +26,15 @@ if($html == false) {
     <title>html source code and summary</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script type="text/javascript" src="js/jquery-1.4.2.js"></script>
-    <!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
+
     <script type="text/javascript">
         $(document).ready(function(){
+            var parsed_textarea =  GetElementInsideContainer("dom-source-parsed", "Parsed");
+
             $("h3").click(function(){
                 var source_div = document.getElementById("dom-source");
                 var source_textarea = GetElementInsideContainer("dom-source", "Desc");
+                var summary_div = document.getElementById("dom-summary");
 
                 parser = new DOMParser();
                 //doc = parser.parseFromString(source_textarea.textContent, "text/xml");
@@ -43,7 +46,6 @@ if($html == false) {
 
                 var hashmap = walkDOM(doc);
                 var destination_div = document.getElementById("dom-source-parsed");
-                var parsed_textarea =  GetElementInsideContainer("dom-source-parsed", "Parsed");
 
                 var string ='';
                 // print out map content
@@ -73,9 +75,19 @@ if($html == false) {
 
 
                     }, false);
-                    document.body.appendChild(inputElement);
+                    summary_div.appendChild(inputElement);
                 }
                 parsed_textarea.textContent = string;
+            });
+
+            $("h4").click(function(){
+                parsed_textarea.textContent = '';
+
+                // http://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
+                var myNode = document.getElementById("dom-summary");
+                while (myNode.firstChild) {
+                    myNode.removeChild(myNode.firstChild);
+                }
             });
         });
 
@@ -161,6 +173,7 @@ else {
 <table>
         <tr>
             <td>
+                <!-- http://stackoverflow.com/questions/23740548/how-to-pass-variables-and-data-from-php-to-javascript -->
                 <div id="dom-source" contenteditable="true">
                     <?php
                         echo "<br>";
@@ -180,13 +193,18 @@ else {
                  </div>
             </td>
         </tr>
-        <tr><h3>Click to show summary.</h3></tr>
         <tr>
-            <div id="dom-summary">
+            <td><h3>Click to show summary.</h3></td>
+            <td><h4>Click to clear summary</h4></td>
+        </tr>
+        <tr>
 
-            </div>
         </tr>
 </table>
+
+<div id="dom-summary">
+
+</div>
 
 </body>
 </html>
