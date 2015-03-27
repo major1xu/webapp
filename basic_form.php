@@ -71,7 +71,7 @@ if($html == false) {
                         // make sure we get the correct tag
                         // http://stackoverflow.com/questions/12024483/how-to-pass-parameter-to-function-using-in-addeventlistener
                         //alert('inside:' + this.value);
-                        parsed_textarea.textContent  = '<h4>' + this.value + '</h4>';
+                        parsed_textarea.textContent  = this.value;
 
 
                     }, false);
