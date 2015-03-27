@@ -51,7 +51,7 @@ if($html == false) {
                 // print out map content
                 // https://sunfishempire.wordpress.com/2014/08/19/5-ways-to-use-a-javascript-hashmap/
                 //
-                // MXU: think add a click function on each tag, upon click, we go to source_div (dom-source), and highlight
+                // MXU (TBD): in click function for each tag, upon click, we go to source_div (dom-source), and highlight
                 // the corresponding elements.
                 //
                 for (var x in hashmap)
@@ -67,12 +67,8 @@ if($html == false) {
                     inputElement.type = "button"
                     inputElement.value = x + ":" + value;
                     inputElement.addEventListener('click', function(){
-
-                        // make sure we get the correct tag
                         // http://stackoverflow.com/questions/12024483/how-to-pass-parameter-to-function-using-in-addeventlistener
-                        //alert('inside:' + this.value);
                         parsed_textarea.textContent  = this.value;
-
 
                     }, false);
                     summary_div.appendChild(inputElement);
@@ -140,9 +136,6 @@ if($html == false) {
             };
         }(DOMParser));
 
-        // handle the parsing error from initial parseFormString call.
-        // http://stackoverflow.com/questions/11563554/how-do-i-detect-xml-parsing-errors-when-using-javascripts-domparser-in-a-cross
-        // My function that parses a string into an XML DOM, throwing an Error if XML parsing fails
         function parseXml(xmlString) {
             // http://www.w3schools.com/dom/dom_parser.asp
             if (window.DOMParser)
@@ -156,27 +149,9 @@ if($html == false) {
                 xmlDoc.async=false;
                 xmlDoc.loadXML(xmlString);
             }
-            /*
-            if(isParseError(xmlDoc)) {
-                throw new Error('Error parsing XML');
-            }
-            */
+
             return xmlDoc;
         }
-
-        function isParseError(parsedDocument) {
-            // parser and parsererrorNS could be cached on startup for efficiency
-            var parser = new DOMParser(),
-                errorneousParse = parser.parseFromString('<', 'text/xml'),
-                parsererrorNS = errorneousParse.getElementsByTagName("parsererror")[0].namespaceURI;
-
-            if (parsererrorNS === 'http://www.w3.org/1999/xhtml') {
-                // In PhantomJS the parseerror element doesn't seem to have a special namespace, so we are just guessing here :(
-                return parsedDocument.getElementsByTagName("parsererror").length > 0;
-            }
-
-            return parsedDocument.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0;
-        };
 
         // Use the function below to walk the DOM
         // http://stackoverflow.com/questions/8747086/most-efficient-way-to-iterate-over-all-dom-elements
