@@ -25,7 +25,7 @@ if($html == false) {
 <head>
     <title>html source code and summary</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="js/jquery-1.4.2.js"></script>
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function(){
