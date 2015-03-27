@@ -107,10 +107,11 @@ if($html == false) {
                 xmlDoc.async=false;
                 xmlDoc.loadXML(xmlString);
             }
-
+            /*
             if(isParseError(xmlDoc)) {
                 throw new Error('Error parsing XML');
             }
+            */
             return xmlDoc;
         }
 
