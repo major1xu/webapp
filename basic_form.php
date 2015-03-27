@@ -91,6 +91,55 @@ if($html == false) {
             });
         });
 
+        //
+        // http://stackoverflow.com/questions/9250545/javascript-domparser-access-innerhtml-and-other-properties
+        /*
+         * DOMParser HTML extension
+         * 2012-02-02
+         *
+         * By Eli Grey, http://eligrey.com
+         * Public domain.
+         * NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+         */
+
+        /*! @source https://gist.github.com/1129031 */
+        /*global document, DOMParser*/
+
+        (function(DOMParser) {
+            "use strict";
+            var DOMParser_proto = DOMParser.prototype
+              , real_parseFromString = DOMParser_proto.parseFromString;
+
+            // Firefox/Opera/IE throw errors on unsupported types
+            try {
+                // WebKit returns null on unsupported types
+                if ((new DOMParser).parseFromString("", "text/html")) {
+                    // text/html parsing is natively supported
+                    return;
+                }
+            } catch (ex) {}
+
+            DOMParser_proto.parseFromString = function(markup, type) {
+                if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+                    var doc = document.implementation.createHTMLDocument("")
+                      , doc_elt = doc.documentElement
+                      , first_elt;
+
+                    doc_elt.innerHTML = markup;
+                    first_elt = doc_elt.firstElementChild;
+
+                    if (doc_elt.childElementCount === 1
+                        && first_elt.localName.toLowerCase() === "html") {
+                        doc.replaceChild(first_elt, doc_elt);
+                    }
+
+                    return doc;
+                } else {
+                    return real_parseFromString.apply(this, arguments);
+                }
+            };
+        }(DOMParser));
+
         // handle the parsing error from initial parseFormString call.
         // http://stackoverflow.com/questions/11563554/how-do-i-detect-xml-parsing-errors-when-using-javascripts-domparser-in-a-cross
         // My function that parses a string into an XML DOM, throwing an Error if XML parsing fails
@@ -99,7 +148,7 @@ if($html == false) {
             if (window.DOMParser)
             {
                 parser=new DOMParser();
-                xmlDoc=parser.parseFromString(xmlString,"text/xml");
+                xmlDoc=parser.parseFromString(xmlString,"text/html");
             }
             else // code for IE
             {
